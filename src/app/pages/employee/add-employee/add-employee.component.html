@@ -1,0 +1,230 @@
+<form [formGroup]="employeeForm" (ngSubmit)="addEmployee()" class="mt-3 row">
+  <div class="col-6">
+    <div class="mb-3">
+      <label for="username" class="form-label">Username</label>
+      <input
+        type="text"
+        name="username"
+        class="form-control"
+        id="username"
+        formControlName="username"
+        required
+      />
+      <div *ngIf="username && (username.dirty || username.touched)">
+        <div *ngIf="username.errors?.['required']" class="form-error-message">
+          Please input your username
+        </div>
+        <div *ngIf="username.errors?.['minlength']" class="form-error-message">
+          Please input min. 5 character
+        </div>
+      </div>
+    </div>
+    <div class="mb-3">
+      <label for="firstName" class="form-label">First Name</label>
+      <input
+        type="text"
+        name="firstName"
+        class="form-control"
+        id="firstName"
+        formControlName="firstName"
+        required
+      />
+      <div *ngIf="firstName && (firstName.dirty || firstName.touched)">
+        <div *ngIf="firstName.errors?.['required']" class="form-error-message">
+          Please input your first name
+        </div>
+      </div>
+    </div>
+    <div class="mb-3">
+      <label for="birthDate" class="form-label">Birth Date</label>
+      <div class="input-group">
+        <input
+          class="form-control"
+          placeholder="dd/mm/yyyy"
+          name="birthDate"
+          id="birthDate"
+          (dateSelect)="onBirthDateSelect($event)"
+          ngbDatepicker
+          #bdate="ngbDatepicker"
+          (click)="bdate.toggle()"
+          required
+        />
+        <button
+          class="btn btn-secondary"
+          (click)="bdate.toggle()"
+          type="button"
+        >
+          <span class="material-symbols-outlined"> calendar_month </span>
+        </button>
+        <div *ngIf="birthDate && (birthDate.dirty || birthDate.touched)">
+          <div
+            *ngIf="birthDate.errors?.['required']"
+            class="form-error-message"
+          >
+            Please input your birth date
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="mb-3">
+      <label for="status" class="form-label">Status</label>
+      <input
+        type="text"
+        name="status"
+        class="form-control"
+        id="status"
+        formControlName="status"
+        required
+      />
+      <div *ngIf="status && (status.dirty || status.touched)">
+        <div *ngIf="status.errors?.['required']" class="form-error-message">
+          Please input your status
+        </div>
+      </div>
+    </div>
+    <div class="mb-3">
+      <label for="description" class="form-label">Description</label>
+      <div class="input-group">
+        <input
+          class="form-control"
+          placeholder="dd/mm/yyyy"
+          name="decription"
+          id="description"
+          ngbDatepicker
+          (dateSelect)="onDescriptionSelect($event)"
+          #desc="ngbDatepicker"
+          (click)="desc.toggle()"
+          required
+        />
+        <button class="btn btn-secondary" (click)="desc.toggle()" type="button">
+          <span class="material-symbols-outlined"> calendar_month </span>
+        </button>
+      </div>
+      <div *ngIf="description && (description.dirty || description.touched)">
+        <div
+          *ngIf="description.errors?.['required']"
+          class="form-error-message"
+        >
+          Please input your description
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-6">
+    <div class="mb-3">
+      <label for="email" class="form-label">Email Address</label>
+      <input
+        type="email"
+        name="email"
+        class="form-control"
+        id="email"
+        formControlName="email"
+        required
+      />
+      <div *ngIf="email && (email.dirty || email.touched)">
+        <div *ngIf="email.errors?.['required']" class="form-error-message">
+          Please input your email
+        </div>
+        <div *ngIf="email.errors?.['email']" class="form-error-message">
+          Not a valid email
+        </div>
+      </div>
+    </div>
+    <div class="mb-3">
+      <label for="lastName" class="form-label">Last Name</label>
+      <input
+        type="text"
+        name="lastName"
+        class="form-control"
+        id="lastName"
+        formControlName="lastName"
+        required
+      />
+      <div *ngIf="lastName && (lastName.dirty || lastName.touched)">
+        <div *ngIf="lastName.errors?.['required']" class="form-error-message">
+          Please input your last name
+        </div>
+      </div>
+    </div>
+    <div class="mb-3">
+      <label for="basicSalary" class="form-label">Basic Salary</label>
+      <div class="input-group">
+        <span class="input-group-text" id="inputGroup-sizing-sm">Rp</span>
+        <input
+          type="number"
+          name="basicSalary"
+          class="form-control"
+          id="basicSalary"
+          formControlName="basicSalary"
+          required
+        />
+      </div>
+      <div *ngIf="basicSalary && (basicSalary.dirty || basicSalary.touched)">
+        <div
+          *ngIf="basicSalary.errors?.['required']"
+          class="form-error-message"
+        >
+          Please input your basic salary
+        </div>
+      </div>
+    </div>
+    <div class="mb-3">
+      <label for="group" class="form-label">Group</label>
+      <div class="dropdown adjust-margin">
+        <a
+          class="btn dropdown- text-start w-100 font-gray form-select border"
+          href="#"
+          role="button"
+          id="group"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          {{ employeeForm.value.group }}
+        </a>
+
+        <ul class="dropdown-menu w-100" aria-labelledby="group">
+          <li>
+            <div class="mx-2">
+              <input
+                formControlName="groupSearchValue"
+                type="text"
+                class="form-control"
+                id="searchGroup"
+                aria-describedby="emailHelp"
+              />
+            </div>
+          </li>
+          <hr />
+          <li *ngFor="let group of groupListResult">
+            <a (click)="onGroupSelected(group.value)" class="dropdown-item">{{
+              group.value
+            }}</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 d-flex gap-2">
+    <button type="button" (click)="back()" class="btn btn-danger d-flex">
+      <span class="material-symbols-outlined"> close </span>
+      Cancel
+    </button>
+    <button
+      type="submit"
+      class="btn btn-success d-flex"
+      [disabled]="!employeeForm.valid"
+    >
+      <span class="material-symbols-outlined"> save </span>
+      Save
+    </button>
+  </div>
+</form>
+
+<hr />
+<pre>Form: {{ employeeForm.value | json }}</pre>
+<pre>GroupList: {{ groupList | json }}</pre>
+
+<script>
+  $(".my-select").selectpicker();
+</script>

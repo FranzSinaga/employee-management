@@ -1,0 +1,62 @@
+<div id="liveAlertPlaceholder"></div>
+
+<div class="d-flex justify-content-center">
+  <div class="card w-50">
+    <div class="card-body">
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <div class="mb-3">
+          <label for="email" class="form-label"> Email address </label>
+          <input
+            type="text"
+            class="form-control"
+            id="email"
+            name="email"
+            required
+            formControlName="email"
+          />
+          <div *ngIf="email && (email.dirty || email.touched)">
+            <div *ngIf="email.errors?.['required']" class="form-error-message">
+              Please input your email
+            </div>
+            <div *ngIf="email.errors?.['email']" class="form-error-message">
+              Not a valid email
+            </div>
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input
+            type="password"
+            class="form-control"
+            id="password"
+            formControlName="password"
+            required
+          />
+          <div *ngIf="password && (password.dirty || password.touched)">
+            <div
+              *ngIf="password.errors?.['required']"
+              class="form-error-message"
+            >
+              Please input your password
+            </div>
+            <div
+              *ngIf="password.errors?.['minlength']"
+              class="form-error-message"
+            >
+              Please input min. 6 character
+            </div>
+          </div>
+        </div>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="!loginForm.valid"
+        >
+          Submit
+        </button>
+
+        <pre>{{ loginForm.value | json }}</pre>
+      </form>
+    </div>
+  </div>
+</div>
