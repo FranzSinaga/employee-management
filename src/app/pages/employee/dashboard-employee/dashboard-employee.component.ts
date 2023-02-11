@@ -50,7 +50,7 @@ export class DashboardEmployeeComponent implements OnInit {
       this.paginationConfig.currentPage = tableConfig.currentPage;
       this.searchByFirstName = tableConfig.searchByFirstName;
       this.searchByUsername = tableConfig.searchByUsername;
-      this.searchEmployee();
+      await this.searchEmployee();
     } else {
       this.saveConfigTableData();
     }
