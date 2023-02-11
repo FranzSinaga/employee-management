@@ -22,10 +22,13 @@ export class DetailEmployeeComponent implements OnInit {
   }
 
   formatDate(e: any) {
-    const date = e.split('T')[0];
-    console.log(date);
-    const split = date.split('-');
-    return `${split[2]}/${split[1]}/${split[0]}`;
+    if (e.includes('T')) {
+      const date = e.split('T')[0];
+      console.log(date);
+      const split = date.split('-');
+      return `${split[2]}/${split[1]}/${split[0]}`;
+    }
+    return e;
   }
 
   back() {
