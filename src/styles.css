@@ -13,3 +13,9 @@
 a {
   text-decoration: none;
 }
+
+.ngx-pagination {
+  border: solid 1px lightgray;
+  padding: 5px;
+  border-radius: 3px;
+}

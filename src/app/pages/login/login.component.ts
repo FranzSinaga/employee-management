@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { UserModel } from 'src/app/model/user/user-model.model';
 import { LoginService } from 'src/app/service/loginService/login.service';
+import { setItemToSessionStorage } from 'src/storage';
 
 @Component({
   selector: 'app-login',
@@ -9,7 +11,7 @@ import { LoginService } from 'src/app/service/loginService/login.service';
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent {
-  constructor(private loginService: LoginService) {}
+  constructor(private loginService: LoginService, private router: Router) {}
 
   loginForm: FormGroup = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
@@ -36,6 +38,7 @@ export class LoginComponent {
     console.log(res);
     if (res.response === 'failed') {
       const alertPlaceholder = document.getElementById('liveAlertPlaceholder');
+      console.log(alertPlaceholder);
 
       const alert = (message: String, type: String) => {
         const wrapper = document.createElement('div');
@@ -46,10 +49,16 @@ export class LoginComponent {
           '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
           '</div>',
         ].join('');
-
         alertPlaceholder.append(wrapper);
       };
-      alert(res.message, 'danger');
+      if (!alertPlaceholder.hasChildNodes()) {
+        alert(res.message, 'danger');
+      }
+    }
+
+    if (res.response === 'success') {
+      const setSession = setItemToSessionStorage('session', req);
+      this.router.navigateByUrl('/');
     }
     this.loginForm.reset();
   }

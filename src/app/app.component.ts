@@ -1,9 +1,11 @@
-import { Component, Injectable } from '@angular/core';
+import { Component, Injectable, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import {
   NgbDateStruct,
   NgbDateAdapter,
   NgbDateParserFormatter,
 } from '@ng-bootstrap/ng-bootstrap';
+import { clearSessionStorage, getItemFromSessionStorage } from 'src/storage';
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
  */
@@ -61,6 +63,20 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
+
   title = 'employee';
+  isLogin: Boolean;
+  selectedDate: any;
+  constructor(private router: Router) {}
+
+  ngOnInit(): void {
+    const session = getItemFromSessionStorage('session');
+    session === null ? (this.isLogin = false) : (this.isLogin = true);
+  }
+
+  logout() {
+    clearSessionStorage();
+    this.router.navigateByUrl('/login');
+  }
 }

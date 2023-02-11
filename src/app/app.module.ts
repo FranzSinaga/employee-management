@@ -5,6 +5,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { ToastNoAnimationModule, ToastrModule } from 'ngx-toastr';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './pages/home/home.component';
@@ -16,6 +18,8 @@ import { DashboardEmployeeComponent } from './pages/employee/dashboard-employee/
 import { GroupService } from './service/groupService/group.service';
 import { EmployeeService } from './service/employeeService/employee.service';
 import { LoginService } from './service/loginService/login.service';
+import { DetailEmployeeComponent } from './pages/employee/detail-employee/detail-employee.component';
+import { AuthGuard } from './auth/auth.guard';
 @NgModule({
   declarations: [
     AppComponent,
@@ -24,8 +28,9 @@ import { LoginService } from './service/loginService/login.service';
     PageNotFoundComponent,
     AddEmployeeComponent,
     DashboardEmployeeComponent,
+    DetailEmployeeComponent,
   ],
-  providers: [GroupService, EmployeeService, LoginService],
+  providers: [GroupService, EmployeeService, LoginService, AuthGuard],
   bootstrap: [AppComponent],
   imports: [
     BrowserModule,
@@ -34,6 +39,8 @@ import { LoginService } from './service/loginService/login.service';
     ReactiveFormsModule,
     NgbModule,
     FormsModule,
+    NgxPaginationModule,
+    ToastNoAnimationModule.forRoot(),
   ],
 })
 export class AppModule {}

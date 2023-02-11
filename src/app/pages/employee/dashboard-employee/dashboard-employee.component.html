@@ -1,54 +1,125 @@
-<pre>Sort By value: {{ sortValue | json }}</pre>
-<button type="button" routerLink="/add/employee" class="btn btn-primary d-flex">
-  <span class="material-symbols-outlined"> add </span>
-  Add Employee
-</button>
-<!-- <div class="row mt-3">
-  <div class="col-6">
-    <div class="input-group mb-3">
-      <span class="input-group-text" id="basic-addon1">Sort By</span>
-      <select
-        [(ngModel)]="sortByValue"
-        class="form-select"
-        id="sortBy"
-        (change)="sortData(sortByValue)"
-      >
-        <option *ngFor="let sort of sortByList" value="{{ sort }}">
-          {{ sort }}
-        </option>
-      </select>
+<h3>Emloyee List</h3>
+<hr>
+<div class="row g-2">
+  <div class="col-md-6">
+    <button
+      type="button"
+      routerLink="/employee/add"
+      class="btn btn-primary d-flex mb-3"
+    >
+      <span class="material-symbols-outlined"> add </span>
+      Add Employee
+    </button>
+  </div>
+  <div class="col-md-6 mt-2 text-end d-flex gap-2 justify-content-end">
+    <div class="col-auto">
+      <label for="username" class="visually-hidden">Email</label>
+      <input
+        type="text"
+        class="form-control"
+        id="username"
+        placeholder="Search by username"
+        [(ngModel)]="searchByUsername"
+      />
+    </div>
+    <div class="col-auto">
+      <label for="firstname" class="visually-hidden">First Name</label>
+      <input
+        type="text"
+        class="form-control"
+        id="firstname"
+        placeholder="Search by first name"
+        [(ngModel)]="searchByFirstName"
+      />
+    </div>
+    <div class="col-auto">
+      <button (click)="searchEmployee()" class="btn btn-primary mb-3">
+        Search
+      </button>
+    </div>
+    <div
+      class="col-auto"
+      *ngIf="searchByFirstName !== '' || searchByUsername !== ''"
+    >
+      <button (click)="clearSearch()" class="btn btn-danger mb-3">Clear</button>
     </div>
   </div>
-</div> -->
-<table class="table mt-3 table-hover table-bordered">
-  <thead>
-    <tr>
-      <!-- <th scope="col">#</th> -->
-      <th
-        *ngFor="let head of tableHeader"
-        scope="col"
-        (click)="sortData(head.value)"
-        class="pointer"
-      >
-        <div class="d-flex justify-content-between">
-          {{ head.label }}
-          <span class="material-symbols-outlined {{sortValue === head.value ? 'text-primary' : 'text-secondary'}}"> unfold_more </span>
-        </div>
-      </th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let employee of allEmployee; let i = index">
-      <!-- <td>{{ i + 1 }}</td> -->
-      <td>{{ employee.username }}</td>
-      <td>{{ employee.firstName }}</td>
-      <td>{{ employee.lastName }}</td>
-      <td>{{ employee.email }}</td>
-      <!-- <td>{{ employee.birthDate }}</td> -->
-      <!-- <td>{{ formatSalary(employee.basicSalary) }}</td> -->
-      <!-- <td>{{ employee.status }}</td> -->
-      <!-- <td>{{ employee.group }}</td> -->
-      <!-- <td>{{ employee.description }}</td> -->
-    </tr>
-  </tbody>
-</table>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-hover table-bordered">
+    <thead>
+      <tr class="table-primary">
+        <th
+          *ngFor="let head of tableHeader"
+          scope="col"
+          (click)="sortData(head.value)"
+          class="pointer"
+        >
+          <div class="d-flex justify-content-between">
+            {{ head.label }}
+            <span
+              class="material-symbols-outlined {{
+                sortValue === head.value ? 'text-primary' : 'text-secondary'
+              }}"
+            >
+              unfold_more
+            </span>
+          </div>
+        </th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody *ngIf="allEmployee.length >= 1; else noData">
+      <tr *ngFor="let employee of allEmployee | paginate : paginationConfig">
+        <td>{{ employee.username }}</td>
+        <td>{{ employee.firstName }}</td>
+        <td>{{ employee.lastName }}</td>
+        <td>{{ employee.email }}</td>
+        <td class="text-center w100px">
+          <div class="btn-group" role="group" aria-label="Basic example">
+            <button
+              type="button"
+              class="btn btn-primary"
+              (click)="goToDetail(employee)"
+            >
+              <span class="material-symbols-outlined"> visibility </span>
+            </button>
+            <button type="button" (click)="edit()" class="btn btn-warning text-dark">
+              <span class="material-symbols-outlined"> edit </span>
+            </button>
+            <button type="button" (click)="deleteBtn()" class="btn btn-danger">
+              <span class="material-symbols-outlined"> delete </span>
+            </button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+    <ng-template #noData>
+      <tbody>
+        <tr>
+          <td colspan="4" class="text-center">No Data</td>
+        </tr>
+      </tbody>
+    </ng-template>
+  </table>
+</div>
+
+<div class="d-flex justify-content-between text-end">
+  <div class="mb-3 d-flex gap-2">
+    <div class="col-form-label">Show</div>
+    <select
+      [(ngModel)]="itemsPerPage"
+      class="form-select form-control-sm"
+      (change)="changeItemsPerPage($event)"
+    >
+      <option value="5">5</option>
+      <option value="10">10</option>
+      <option value="20">20</option>
+    </select>
+    <div class="col-form-label">entries</div>
+  </div>
+  <pagination-controls
+    (pageChange)="onPageChange($event)"
+  ></pagination-controls>
+</div>

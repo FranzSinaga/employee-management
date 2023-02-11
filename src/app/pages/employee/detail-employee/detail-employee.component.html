@@ -1,0 +1,46 @@
+<h3>Detail Employee</h3>
+<hr>
+<table class="table table-bordered">
+  <tbody>
+    <tr>
+      <th class="table-primary">Username</th>
+      <td>{{ employee.username }}</td>
+    </tr>
+    <tr>
+      <th class="table-primary">First Name</th>
+      <td>{{ employee.firstName }}</td>
+    </tr>
+    <tr>
+      <th class="table-primary">Last Name</th>
+      <td>{{ employee.lastName }}</td>
+    </tr>
+    <tr>
+      <th class="table-primary">Email</th>
+      <td>{{ employee.email }}</td>
+    </tr>
+    <tr>
+      <th class="table-primary">Birth Date</th>
+      <td>{{ formatDate(employee.birthDate) }}</td>
+    </tr>
+    <tr>
+      <th class="table-primary">Bassic Salary</th>
+      <td>{{ formatSalary(employee.basicSalary) }}</td>
+    </tr>
+    <tr>
+      <th class="table-primary">Status</th>
+      <td>{{ employee.status }}</td>
+    </tr>
+    <tr>
+      <th class="table-primary">Group</th>
+      <td>{{ employee.group }}</td>
+    </tr>
+    <tr>
+      <th class="table-primary">Description</th>
+      <td>{{ formatDate(employee.description) }}</td>
+    </tr>
+  </tbody>
+</table>
+
+<button type="button" (click)="back()" class="btn btn-success d-flex">
+  Ok
+</button>

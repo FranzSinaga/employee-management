@@ -1,6 +1,5 @@
-import data from "./Employee.json";
+import { employeeData } from "./EmployeeData";
 
 export const employee = async () => {
-
-  return data
+  return employeeData;
 };

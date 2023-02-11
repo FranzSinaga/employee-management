@@ -13,11 +13,9 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { GroupService } from 'src/app/service/groupService/group.service';
 import { GroupListModel } from 'src/app/model/group-list/group-list.model';
-
-function setDate(e: NgbDateStruct) {
-  const DELIMITER = '/';
-  return e.day + DELIMITER + e.month + DELIMITER + e.year;
-}
+import { formatToCurrency, parseToDate } from 'src/app/utils/formatter';
+import { EmployeeService } from 'src/app/service/employeeService/employee.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-add-employee',
@@ -31,11 +29,14 @@ function setDate(e: NgbDateStruct) {
 export class AddEmployeeComponent implements OnInit {
   constructor(
     private _location: Location,
-    private groupService: GroupService
+    private groupService: GroupService,
+    private employeeService: EmployeeService,
+    private toastr: ToastrService
   ) {}
 
   groupList: Array<GroupListModel>;
   groupListResult: Array<GroupListModel>;
+  today: String = new Date().toISOString().split('.')[0];
   employeeForm: FormGroup = new FormGroup({
     username: new FormControl('', [
       Validators.required,
@@ -46,6 +47,7 @@ export class AddEmployeeComponent implements OnInit {
     lastName: new FormControl('', [Validators.required]),
     birthDate: new FormControl('', [Validators.required]),
     basicSalary: new FormControl('', [Validators.required]),
+    basicSalaryValue: new FormControl('', [Validators.required]),
     status: new FormControl('', [Validators.required]),
     group: new FormControl('Energy', [Validators.required]),
     description: new FormControl('', [Validators.required]),
@@ -73,18 +75,6 @@ export class AddEmployeeComponent implements OnInit {
     this._location.back();
   }
 
-  onDescriptionSelect(e: NgbDateStruct) {
-    this.employeeForm.patchValue({
-      description: setDate(e),
-    });
-  }
-
-  onBirthDateSelect(e: NgbDateStruct) {
-    this.employeeForm.patchValue({
-      birthDate: setDate(e),
-    });
-  }
-
   onGroupSelected(group: String) {
     this.employeeForm.patchValue({
       group: group,
@@ -92,16 +82,70 @@ export class AddEmployeeComponent implements OnInit {
   }
 
   addEmployee() {
-    console.log('add')
+    const req = this.employeeForm;
+    const groupTemp = this.group.value;
+    this.employeeService.setAllEmployee(req.value);
+    this.employeeForm.reset();
+    this.employeeForm.patchValue({
+      group: groupTemp,
+    });
+    this.toastr.success('Add employee successfull', 'Success', {
+      closeButton: true,
+    });
+    // console.log('add');
   }
 
-  get username() { return this.employeeForm.get('username')}
-  get email() { return this.employeeForm.get('email')}
-  get firstName() { return this.employeeForm.get('firstName')}
-  get lastName() { return this.employeeForm.get('lastName')}
-  get birthDate() { return this.employeeForm.get('birthDate')}
-  get basicSalary() { return this.employeeForm.get('basicSalary')}
-  get status() { return this.employeeForm.get('status')}
-  get group() { return this.employeeForm.get('group')}
-  get description() { return this.employeeForm.get('description')}
+  formatBasicSalary() {
+    let separator: any;
+    var number_string = this.basicSalaryValue.value
+      .replace(/[^,\d]/g, '')
+      .toString();
+    var split = number_string.split(',');
+    var sisa = split[0].length % 3;
+    var rupiah = split[0].substr(0, sisa);
+    var ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+    if (ribuan) {
+      separator = sisa ? '.' : '';
+      rupiah += separator + ribuan.join('.');
+    }
+
+    rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+    this.employeeForm.patchValue({
+      basicSalaryValue: rupiah,
+      basicSalary: rupiah.replaceAll('.', ''),
+    });
+    return rupiah;
+  }
+
+  get username() {
+    return this.employeeForm.get('username');
+  }
+  get email() {
+    return this.employeeForm.get('email');
+  }
+  get firstName() {
+    return this.employeeForm.get('firstName');
+  }
+  get lastName() {
+    return this.employeeForm.get('lastName');
+  }
+  get birthDate() {
+    return this.employeeForm.get('birthDate');
+  }
+  get basicSalary() {
+    return this.employeeForm.get('basicSalary');
+  }
+  get status() {
+    return this.employeeForm.get('status');
+  }
+  get group() {
+    return this.employeeForm.get('group');
+  }
+  get description() {
+    return this.employeeForm.get('description');
+  }
+  get basicSalaryValue() {
+    return this.employeeForm.get('basicSalaryValue');
+  }
 }

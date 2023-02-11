@@ -3,8 +3,13 @@
   <div class="container">
     <a class="navbar-brand" routerLink="/">Employee Management</a>
     <div id="logout">
-      <div class="d-flex">
-        <a routerLink="/login" class="nav-link" ariaCurrentWhenActive="page">
+      <div class="d-flex" *ngIf="isLogin">
+        <a
+          (click)="logout()"
+          class="nav-link"
+          ariaCurrentWhenActive="page"
+          style="cursor: pointer"
+        >
           <span class="material-symbols-outlined"> logout </span>
         </a>
       </div>

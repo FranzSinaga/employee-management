@@ -26,12 +26,14 @@
             ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "node_modules/@ng-select/ng-select/themes/default.theme.css",
-              "src/styles.css"
+              "node_modules/jquery-datetimepicker/build/jquery.datetimepicker.min.css",
+              "src/styles.css",
+              "node_modules/ngx-toastr/toastr.css"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
-              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
+              "node_modules/jquery-datetimepicker/build/jquery.datetimepicker.full.min.js"
             ]
           },
           "configurations": {

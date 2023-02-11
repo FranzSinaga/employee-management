@@ -1,3 +1,7 @@
 .pointer {
   cursor: pointer;
 }
+
+.w100px {
+  width: 100px;
+}
