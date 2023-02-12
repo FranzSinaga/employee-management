@@ -1211,6 +1211,18 @@
       "group": "Energy",
       "description": "2023-02-11T23:03",
       "id": 101
+    },
+    {
+      "username": "FranzSinaga",
+      "firstName": "FranzSinaga",
+      "lastName": "Sinaga",
+      "email": "sinagafranz12@gmail.com",
+      "birthDate": "1998-12-23T23:54",
+      "basicSalary": "20000000",
+      "status": "Status",
+      "group": "Finance",
+      "description": "2023-02-11T23:54",
+      "id": 102
     }
   ]
 }

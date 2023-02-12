@@ -38,11 +38,13 @@ export class DashboardEmployeeComponent implements OnInit {
 
   itemsPerPage: number = 5;
   page: number = 1;
+  searchByUsername: String = '';
+  searchByFirstName: String = '';
 
   async ngOnInit(): Promise<void> {
     await this.getEmployeeData();
 
-    const tableConfig = this.getConfigTableData();
+    const tableConfig = await this.getConfigTableData();
     if (tableConfig !== null) {
       console.log(tableConfig);
       this.itemsPerPage = tableConfig.itemsPerPage;
@@ -88,13 +90,10 @@ export class DashboardEmployeeComponent implements OnInit {
         return 0;
       });
     }
-
     return sortedData;
   }
 
   // Searching
-  searchByUsername: String = '';
-  searchByFirstName: String = '';
   async searchEmployee(): Promise<void> {
     const username = this.searchByUsername;
     const firstName = this.searchByFirstName;
@@ -107,6 +106,7 @@ export class DashboardEmployeeComponent implements OnInit {
       });
       this.allEmployee = sortedData;
     }
+    this.saveConfigTableData();
   }
 
   async clearSearch(): Promise<void> {
@@ -146,14 +146,15 @@ export class DashboardEmployeeComponent implements OnInit {
       currentPage: this.page,
       searchByFirstName: this.searchByFirstName,
       searchByUsername: this.searchByUsername,
+      sortByValue: this.sortValue,
     };
+    console.log('config', config);
     removeSessionByKey('employeeConfigTableData');
     setItemToSessionStorage('employeeConfigTableData', config);
   }
 
   getConfigTableData(): any {
     const result = getItemFromSessionStorage('employeeConfigTableData');
-    console.log(result);
     return result;
   }
 
