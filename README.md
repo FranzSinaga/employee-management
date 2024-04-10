@@ -1,7 +1,7 @@
 
 # Employee Management
 
-Employee management is a website built using Angulan to manage employee data.
+Employee management is a website built using Angular to manage employee data.
 
 ## Run Locally
 
